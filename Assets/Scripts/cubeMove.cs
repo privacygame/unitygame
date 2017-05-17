@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cubeMove : MonoBehaviour {
+public class CubeMove : MonoBehaviour {
 
     private bool dirRight = true;
     public float speed = 2f;
