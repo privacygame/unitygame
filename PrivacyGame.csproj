@@ -97,6 +97,7 @@
     <Compile Include="Assets\Invector-3rdPersonController\Basic Locomotion LITE\Scripts\Generic\vExtensions.cs" />
     <Compile Include="Assets\Invector-3rdPersonController\Basic Locomotion LITE\Scripts\Generic\vPickupItem.cs" />
     <Compile Include="Assets\Scripts\AttachToPlatform.cs" />
+    <Compile Include="Assets\Scripts\AttachWebcam.cs" />
     <Compile Include="Assets\Scripts\CubeMove.cs" />
     <Compile Include="Assets\Scripts\IpInfoObject.cs" />
     <Compile Include="Assets\Scripts\RetrieveInformation.cs" />

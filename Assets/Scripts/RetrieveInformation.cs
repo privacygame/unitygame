@@ -22,8 +22,6 @@ public class RetrieveInformation : MonoBehaviour {
         - e mail van persoon?
     */
 
-    public RawImage rawimage;
-    
     // Information to store
     private string internalIp;
     private IpInfoObject ipInfoObject;
@@ -56,12 +54,6 @@ public class RetrieveInformation : MonoBehaviour {
     
     void Start()
     {
-        //Project webcam onto plane (todo)
-        //WebCamTexture webcamTexture = new WebCamTexture();
-        //rawimage.texture = webcamTexture;
-        //rawimage.material.mainTexture = webcamTexture;
-        //webcamTexture.Play();
-
         // System information
         SetSystemInfo();
 
@@ -146,8 +138,8 @@ public class RetrieveInformation : MonoBehaviour {
     }
     private void CreateWebResult()
     {
-        string webContent = "<!DOCTYPE html><html lang='en'> <head> <meta charset='utf-8'> <title>The Privacy Game </title> <meta name='description' content='Your information has been leaked!'> <meta name='author' content='PrivacyGame'> </head> <style> body {font-family: Arial;} </style> <body style='background-color:lightblue; '> <div> <h1>Thanks for playing the privacy game!</h1> <h3 style='color:red'>The goal of this game is to show you that data can be gathered without your knowledge!</h3> <h3>The following data has been gathered while you were playing: </h3> <table style='width:25%' border=1> <tr> <td>Interne IP</td> <td>"+internalIp+"</td> </tr> <tr> <td>Externe IP</td> <td>"+ipInfoObject.ip+"</td> </tr> <tr> <td>Hostnaam</td> <td>"+ipInfoObject.hostname+"</td> </tr> <tr> <td>Stad</td> <td>"+ipInfoObject.city+"</td> </tr> <tr> <td>Regio</td> <td>"+ipInfoObject.region+"</td> </tr> <tr> <td>Land</td> <td>"+ipInfoObject.country+"</td> </tr> <tr> <td>Locatie</td> <td>"+ipInfoObject.loc+"</td> </tr> <tr> <td>Provider</td> <td>"+ipInfoObject.org+"</td> </tr> <tr> <td>Postcode</td> <td>"+ipInfoObject.postal+"</td> </tr> <tr> <td>Batterijduur</td> <td>"+batteryLevel+"</td> </tr> <tr> <td>Batterij status</td> <td>"+batteryStatus+"</td> </tr> <tr> <td>Apparaat</td> <td>"+deviceModel+"</td> </tr> <tr> <td>Naam apparaat</td> <td>"+deviceName+"</td> </tr> <tr> <td>Type apparaat</td> <td>"+deviceType+"</td> </tr> <tr> <td>Unieke code van apparaat</td> <td>"+deviceUniqueIdentifier+"</td> </tr> <tr> <td>Grafische kaart id</td> <td>"+graphicsDeviceID+"</td> </tr> <tr> <td>Grafische kaart naam</td> <td>"+graphicsDeviceName+"</td> </tr> <tr> <td>Grafische kaart type</td> <td>"+graphicsDeviceType+"</td> </tr> <tr> <td>Grafische kaart fabrikant</td> <td>"+graphicsDeviceVendor+"</td> </tr> <tr> <td>Grafische kaart fabrikant id</td> <td>"+graphicsDeviceVendorID+"</td> </tr> <tr> <td>Grafische kaart versie</td> <td>"+graphicsDeviceVersion+"</td> </tr> <tr> <td>Grafisch geheugen</td> <td>"+graphicsMemorySize+"</td> </tr> <tr> <td>Besturingssysteem</td> <td>"+operatingSystem+"</td> </tr> <tr> <td>Besturingssysteem familie</td> <td>"+operatingSystemFamily+"</td> </tr> <tr> <td>Processors</td> <td>"+processorCount+"</td> </tr> <tr> <td>Processor frequentie</td> <td>"+processorFrequency+"</td> </tr> <tr> <td>Systeemgeheugen</td> <td>"+systemMemorySize+"</td> </tr> <tr> <td>Systeemgebruiker</td> <td>"+systemUsername+"</td> </tr> <tr> <td>MAC Adres</td> <td>"+macAddress+"</td> </tr> <tr> <td>Netwerkadapter omschrijving</td> <td>"+networkAdapterDescription+"</td> </tr> <tr> <td>Netwerkadapter naam</td> <td>"+networkAdapterName+"</td> </tr> </table> </div> </body></html>";
-         System.IO.File.WriteAllText((System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop) + "\\privacy.html"), webContent);
+        string webContent = "<!DOCTYPE html><html lang='en'> <head> <meta charset='utf-8'> <title>The Privacy Game </title> <meta name='description' content='Your information has been leaked!'> <meta name='author' content='PrivacyGame'> </head> <style> body {font-family: Arial;} </style> <body style='background-color:lightblue; '> <div> <h1>Thanks for playing the privacy game!</h1> <h3 style='color:red'>The goal of this game is to show you that data can be gathered without your knowledge!</h3> <h3>The following data has been gathered while you were playing: </h3> <img src='photo.png'><table style='width:25%' border=1> <tr> <td>Interne IP</td> <td>"+internalIp+"</td> </tr> <tr> <td>Externe IP</td> <td>"+ipInfoObject.ip+"</td> </tr> <tr> <td>Hostnaam</td> <td>"+ipInfoObject.hostname+"</td> </tr> <tr> <td>Stad</td> <td>"+ipInfoObject.city+"</td> </tr> <tr> <td>Regio</td> <td>"+ipInfoObject.region+"</td> </tr> <tr> <td>Land</td> <td>"+ipInfoObject.country+"</td> </tr> <tr> <td>Locatie</td> <td>"+ipInfoObject.loc+"</td> </tr> <tr> <td>Provider</td> <td>"+ipInfoObject.org+"</td> </tr> <tr> <td>Postcode</td> <td>"+ipInfoObject.postal+"</td> </tr> <tr> <td>Batterijduur</td> <td>"+batteryLevel+"</td> </tr> <tr> <td>Batterij status</td> <td>"+batteryStatus+"</td> </tr> <tr> <td>Apparaat</td> <td>"+deviceModel+"</td> </tr> <tr> <td>Naam apparaat</td> <td>"+deviceName+"</td> </tr> <tr> <td>Type apparaat</td> <td>"+deviceType+"</td> </tr> <tr> <td>Unieke code van apparaat</td> <td>"+deviceUniqueIdentifier+"</td> </tr> <tr> <td>Grafische kaart id</td> <td>"+graphicsDeviceID+"</td> </tr> <tr> <td>Grafische kaart naam</td> <td>"+graphicsDeviceName+"</td> </tr> <tr> <td>Grafische kaart type</td> <td>"+graphicsDeviceType+"</td> </tr> <tr> <td>Grafische kaart fabrikant</td> <td>"+graphicsDeviceVendor+"</td> </tr> <tr> <td>Grafische kaart fabrikant id</td> <td>"+graphicsDeviceVendorID+"</td> </tr> <tr> <td>Grafische kaart versie</td> <td>"+graphicsDeviceVersion+"</td> </tr> <tr> <td>Grafisch geheugen</td> <td>"+graphicsMemorySize+"</td> </tr> <tr> <td>Besturingssysteem</td> <td>"+operatingSystem+"</td> </tr> <tr> <td>Besturingssysteem familie</td> <td>"+operatingSystemFamily+"</td> </tr> <tr> <td>Processors</td> <td>"+processorCount+"</td> </tr> <tr> <td>Processor frequentie</td> <td>"+processorFrequency+"</td> </tr> <tr> <td>Systeemgeheugen</td> <td>"+systemMemorySize+"</td> </tr> <tr> <td>Systeemgebruiker</td> <td>"+systemUsername+"</td> </tr> <tr> <td>MAC Adres</td> <td>"+macAddress+"</td> </tr> <tr> <td>Netwerkadapter omschrijving</td> <td>"+networkAdapterDescription+"</td> </tr> <tr> <td>Netwerkadapter naam</td> <td>"+networkAdapterName+"</td> </tr> </table> </div> </body></html>";
+         System.IO.File.WriteAllText("privacy.html", webContent);
     }
     private void CreateTextfile()
     {
