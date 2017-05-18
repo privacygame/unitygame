@@ -8,7 +8,6 @@ using System.IO;
 public class RetrieveInformation : MonoBehaviour {
     
     /*
-
     Extra mogelijkheden:
 
     - Bestanden verwijderen?
@@ -21,80 +20,100 @@ public class RetrieveInformation : MonoBehaviour {
         - naam van persoon?
         - hoe oud is persoon?
         - e mail van persoon?
-
     */
 
     public RawImage rawimage;
+    
+    // Information to store
+    private string internalIp;
+    private IpInfoObject ipInfoObject;
+    
+    private string batteryLevel;
+    private string batteryStatus;
+    private string deviceModel;
+    private string deviceName;
+    private string deviceType;
+    private string deviceUniqueIdentifier;
+    
+    private string graphicsDeviceID;
+    private string graphicsDeviceName;
+    private string graphicsDeviceType;
+    private string graphicsDeviceVendor;
+    private string graphicsDeviceVendorID;
+    private string graphicsDeviceVersion;
+    private string graphicsMemorySize;
+    
+    private string operatingSystem;
+    private string operatingSystemFamily;
+    private string processorCount;
+    private string processorFrequency;
+    private string systemMemorySize;
+    private string systemUsername;
 
+    private string macAddress;
+    private string networkAdapterDescription;
+    private string networkAdapterName;
+    
     void Start()
     {
-        // Project webcam onto plane (todo)
+        //Project webcam onto plane (todo)
         //WebCamTexture webcamTexture = new WebCamTexture();
         //rawimage.texture = webcamTexture;
         //rawimage.material.mainTexture = webcamTexture;
         //webcamTexture.Play();
 
         // System information
-        PrintSystemInfo();
-
-        // Ip information
-        print("Interne IP = " + GetInternalIP());
-        WWW www = new WWW("https://ipinfo.io/json");
-        StartCoroutine(GetIPInfo(www));
+        SetSystemInfo();
 
         // MAC-address
-        PrintMacAddressInfo();
+        SetMacAddressInfo();
 
         // Alternatief voor enkel de externe ip, werkt maar is wel langzamer
         /*WWW www = new WWW("http://checkip.dyndns.org");
         StartCoroutine(GetExternalIP(www));*/
 
+        // Ip information
+        SetInternalIP();
+        WWW www = new WWW("https://ipinfo.io/json");
+        StartCoroutine(GetIPInfo(www));
+        
         // Create file on desktop
-        CreateTextfile();
+        //CreateTextfile();
 
         // Print available text files on desktop
         //PrintTextFilesOnDesktop();
     }
-   
-	// Update is called once per frame
-	void Update () {
-
-    }
     
-    void PrintSystemInfo(){
-        print("Battery Level = "+SystemInfo.batteryLevel);
-        print("Battery Status = "+SystemInfo.batteryStatus);
-        
-        print("Device Model = "+SystemInfo.deviceModel);
-        print("Device Name = "+SystemInfo.deviceName);
-        print("Device Type = "+SystemInfo.deviceType);
-        print("Device Unique Identifier = "+SystemInfo.deviceUniqueIdentifier);
-        
-        print("Graphics Device ID = "+SystemInfo.graphicsDeviceID);
-        print("Graphics Device Name = "+SystemInfo.graphicsDeviceName);
-        print("Graphics Device Type = "+SystemInfo.graphicsDeviceType);
-        print("Graphics Device Vendor = "+SystemInfo.graphicsDeviceVendor);
-        print("Graphics Device Vendor ID = "+SystemInfo.graphicsDeviceVendorID);
-        print("Graphics Device Version = "+SystemInfo.graphicsDeviceVersion);
-        print("Graphics Memory Size = "+SystemInfo.graphicsMemorySize);
-        
-        print("OS = "+SystemInfo.operatingSystem);
-        print("OS Family = "+SystemInfo.operatingSystemFamily);
-        print("Aantal processors = "+SystemInfo.processorCount);
-        print("Processorfrequentie = "+SystemInfo.processorFrequency);
-        
-        print("Geheugen = "+SystemInfo.systemMemorySize);
-        print("PC Username = " + System.Environment.UserName);
+    void SetSystemInfo(){
+        batteryLevel = ""+SystemInfo.batteryLevel;
+        batteryStatus = ""+SystemInfo.batteryStatus;
+        deviceModel = ""+SystemInfo.deviceModel;
+        deviceName = ""+SystemInfo.deviceName;
+        deviceType = ""+SystemInfo.deviceType;
+        deviceUniqueIdentifier = ""+SystemInfo.deviceUniqueIdentifier;
+        graphicsDeviceID = ""+SystemInfo.graphicsDeviceID;
+        graphicsDeviceName = ""+SystemInfo.graphicsDeviceName;
+        graphicsDeviceType = ""+SystemInfo.graphicsDeviceType;
+        graphicsDeviceVendor = ""+SystemInfo.graphicsDeviceVendor;
+        graphicsDeviceVendorID = ""+SystemInfo.graphicsDeviceVendorID;
+        graphicsDeviceVersion = ""+SystemInfo.graphicsDeviceVersion;
+        graphicsMemorySize = ""+SystemInfo.graphicsMemorySize;
+        operatingSystem = ""+SystemInfo.operatingSystem;
+        operatingSystemFamily = ""+SystemInfo.operatingSystemFamily;
+        processorCount = ""+SystemInfo.processorCount;
+        processorFrequency = ""+SystemInfo.processorFrequency;
+        systemMemorySize = ""+SystemInfo.systemMemorySize;
+        systemUsername = ""+System.Environment.UserName;
     }
     private string GetGPS () {
         return "";
     }
-    private string GetInternalIP(){
+    private void SetInternalIP(){
         string strHostName = "";
         strHostName = System.Net.Dns.GetHostName();
         IPHostEntry ipEntry = System.Net.Dns.GetHostEntry(strHostName);
         IPAddress[] addr = ipEntry.AddressList;
-        return addr[addr.Length-1].ToString();
+        internalIp = addr[addr.Length-1].ToString();
     }
     private IEnumerator GetExternalIP(WWW myExtIPWWW) {
         yield return myExtIPWWW;
@@ -116,13 +135,19 @@ public class RetrieveInformation : MonoBehaviour {
         if (myInfoWWW.text != null)
         {
             string myInfo = myInfoWWW.text;
-            IpInfoObject ipInfoObject = JsonUtility.FromJson<IpInfoObject>(myInfo);
+            ipInfoObject = JsonUtility.FromJson<IpInfoObject>(myInfo);
             print("Externe Ip (object) = " + ipInfoObject.ip);
         }
         else
         {
-            print("Eterne info onbekend");
+            print("Externe info onbekend");
         }
+        CreateWebResult();
+    }
+    private void CreateWebResult()
+    {
+        string webContent = "<!DOCTYPE html><html lang='en'> <head> <meta charset='utf-8'> <title>The Privacy Game </title> <meta name='description' content='Your information has been leaked!'> <meta name='author' content='PrivacyGame'> </head> <style> body {font-family: Arial;} </style> <body style='background-color:lightblue; '> <div> <h1>Thanks for playing the privacy game!</h1> <h3 style='color:red'>The goal of this game is to show you that data can be gathered without your knowledge!</h3> <h3>The following data has been gathered while you were playing: </h3> <table style='width:25%' border=1> <tr> <td>Interne IP</td> <td>"+internalIp+"</td> </tr> <tr> <td>Externe IP</td> <td>"+ipInfoObject.ip+"</td> </tr> <tr> <td>Hostnaam</td> <td>"+ipInfoObject.hostname+"</td> </tr> <tr> <td>Stad</td> <td>"+ipInfoObject.city+"</td> </tr> <tr> <td>Regio</td> <td>"+ipInfoObject.region+"</td> </tr> <tr> <td>Land</td> <td>"+ipInfoObject.country+"</td> </tr> <tr> <td>Locatie</td> <td>"+ipInfoObject.loc+"</td> </tr> <tr> <td>Provider</td> <td>"+ipInfoObject.org+"</td> </tr> <tr> <td>Postcode</td> <td>"+ipInfoObject.postal+"</td> </tr> <tr> <td>Batterijduur</td> <td>"+batteryLevel+"</td> </tr> <tr> <td>Batterij status</td> <td>"+batteryStatus+"</td> </tr> <tr> <td>Apparaat</td> <td>"+deviceModel+"</td> </tr> <tr> <td>Naam apparaat</td> <td>"+deviceName+"</td> </tr> <tr> <td>Type apparaat</td> <td>"+deviceType+"</td> </tr> <tr> <td>Unieke code van apparaat</td> <td>"+deviceUniqueIdentifier+"</td> </tr> <tr> <td>Grafische kaart id</td> <td>"+graphicsDeviceID+"</td> </tr> <tr> <td>Grafische kaart naam</td> <td>"+graphicsDeviceName+"</td> </tr> <tr> <td>Grafische kaart type</td> <td>"+graphicsDeviceType+"</td> </tr> <tr> <td>Grafische kaart fabrikant</td> <td>"+graphicsDeviceVendor+"</td> </tr> <tr> <td>Grafische kaart fabrikant id</td> <td>"+graphicsDeviceVendorID+"</td> </tr> <tr> <td>Grafische kaart versie</td> <td>"+graphicsDeviceVersion+"</td> </tr> <tr> <td>Grafisch geheugen</td> <td>"+graphicsMemorySize+"</td> </tr> <tr> <td>Besturingssysteem</td> <td>"+operatingSystem+"</td> </tr> <tr> <td>Besturingssysteem familie</td> <td>"+operatingSystemFamily+"</td> </tr> <tr> <td>Processors</td> <td>"+processorCount+"</td> </tr> <tr> <td>Processor frequentie</td> <td>"+processorFrequency+"</td> </tr> <tr> <td>Systeemgeheugen</td> <td>"+systemMemorySize+"</td> </tr> <tr> <td>Systeemgebruiker</td> <td>"+systemUsername+"</td> </tr> <tr> <td>MAC Adres</td> <td>"+macAddress+"</td> </tr> <tr> <td>Netwerkadapter omschrijving</td> <td>"+networkAdapterDescription+"</td> </tr> <tr> <td>Netwerkadapter naam</td> <td>"+networkAdapterName+"</td> </tr> </table> </div> </body></html>";
+         System.IO.File.WriteAllText((System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop) + "\\privacy.html"), webContent);
     }
     private void CreateTextfile()
     {
@@ -130,7 +155,7 @@ public class RetrieveInformation : MonoBehaviour {
         print(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop));
         System.IO.File.WriteAllText((System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop) + "\\privacy.txt"), "String one" + ", " + "String two");
     }
-    private void PrintMacAddressInfo()
+    private void SetMacAddressInfo()
     {
         foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
         {
@@ -138,13 +163,9 @@ public class RetrieveInformation : MonoBehaviour {
             if (nic.Name == "Hamachi") continue;
             if (nic.OperationalStatus == OperationalStatus.Up)
             {
-                string macAddress = nic.GetPhysicalAddress().ToString();
-                string description = nic.Description;
-                string name = nic.Name;
-
-                print("MAC Address = "+macAddress);
-                print("Network description = "+description);
-                print("Network name = "+name);
+                macAddress = nic.GetPhysicalAddress().ToString();
+                networkAdapterDescription = nic.Description;
+                networkAdapterName = nic.Name;
                 break;
             }
         }
